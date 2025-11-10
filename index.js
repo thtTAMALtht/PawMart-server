@@ -54,7 +54,12 @@ async function run() {
     });
 
     app.get("/listings", async (req, res) => {
-      const cursor = listingCollection.find();
+      const email = req.query.email;
+      const query = {}
+      if(email){
+        query.email =email;
+      }
+      const cursor = listingCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
     });
