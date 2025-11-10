@@ -26,8 +26,10 @@ async function run() {
   try {
     await client.connect();
     const myDB = client.db("pawMartDB");
+    // collections......
     const userCollection = myDB.collection("users");
     const listingCollection = myDB.collection("listings");
+    const ordersCollection = myDB.collection("orders");
 
     //users realted API...................
     app.post("/users", async (req, res) => {
@@ -45,27 +47,44 @@ async function run() {
 
     //Listing realted API...................
 
-    app.post("/listings", async(req, res) => {
+    app.post("/listings", async (req, res) => {
       const listingDetails = req.body;
       const result = await listingCollection.insertOne(listingDetails);
-      res.send(result)
+      res.send(result);
     });
 
-    app.get("/listings", async(req, res) => {
-        const cursor = listingCollection.find();
-        const result = await cursor.toArray();
-        res.send(result)
+    app.get("/listings", async (req, res) => {
+      const cursor = listingCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
     });
 
-    app.get("/listings/:id", async(req, res) => {
-        const id = req.params.id;
-        const query = {_id : new ObjectId(id)}
-        const result = await listingCollection.findOne(query);
-        res.send(result);
-       
+    app.get("/listings/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await listingCollection.findOne(query);
+      res.send(result);
     });
 
-    //OTHERS realted API...................
+    //Orders realted API...................
+    app.post("/orders", async (req, res) => {
+      const orderDetails = req.body;
+      const result = await ordersCollection.insertOne(orderDetails);
+      res.send(result);
+    });
+
+    app.get("/orders", async (req, res) => {
+      const email = req.query.email;
+      const query = {}
+      if(email){
+        query.email = email
+      }
+      
+      const cursor = ordersCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     //EXTRA realted API...................
 
     await client.db("admin").command({ ping: 1 });
