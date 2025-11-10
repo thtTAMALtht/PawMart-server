@@ -55,14 +55,23 @@ async function run() {
 
     app.get("/listings", async (req, res) => {
       const email = req.query.email;
-      const query = {}
-      if(email){
-        query.email =email;
+      const category = req.query.category;
+    
+      let query = {};
+    
+      if (email) {
+        query.email = email;
       }
-      const cursor = listingCollection.find(query);
-      const result = await cursor.toArray();
+    
+      if (category) {
+        query.category = category;
+      }
+    
+      const result = await listingCollection.find(query).toArray();
       res.send(result);
     });
+    
+    
 
     app.get("/listings/:id", async (req, res) => {
       const id = req.params.id;
@@ -90,6 +99,14 @@ async function run() {
     });
 
     
+    app.get("/listings/latest", async (req, res) => {
+      const cursor = listingCollection.find().limit(1);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+
+
 
     //Orders realted API...................
     app.post("/orders", async (req, res) => {
