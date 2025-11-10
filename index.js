@@ -78,6 +78,17 @@ async function run() {
       res.send(result);
     });
 
+    app.put("/listings/:id", async (req, res) => {
+      const id = req.params.id;
+      const updateProduct = req.body;
+      const query = { _id: new ObjectId(id) };
+      const update = {
+        $set: updateProduct,
+    }
+      const result = await listingCollection.updateOne(query,update);
+      res.send(result);
+    });
+
     
 
     //Orders realted API...................
