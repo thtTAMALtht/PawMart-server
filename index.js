@@ -85,7 +85,22 @@ async function run() {
       res.send(result);
     });
 
-    //EXTRA realted API...................
+    //search realted API...................
+
+    app.get("/search", async (req, res) => {
+      const searchTxt = req.query.search
+      // const query = {name : searchTxt}
+      const query = {name : {$regex : searchTxt, $options: "i"}}
+      const cursor = listingCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+
+
+
+
+
 
     await client.db("admin").command({ ping: 1 });
     console.log("You successfully connected to MongoDB!");
