@@ -71,7 +71,7 @@ async function run() {
       res.send(result);
     });
     
-    
+  
 
     app.get("/listings/:id", async (req, res) => {
       const id = req.params.id;
@@ -106,8 +106,6 @@ async function run() {
     });
 
 
-
-
     //Orders realted API...................
     app.post("/orders", async (req, res) => {
       const orderDetails = req.body;
@@ -137,10 +135,6 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
-
-
-
-
 
 
 
