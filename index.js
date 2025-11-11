@@ -99,8 +99,8 @@ async function run() {
     });
 
     
-    app.get("/listings/latest", async (req, res) => {
-      const cursor = listingCollection.find().limit(1);
+    app.get("/latest-listings", async (req, res) => {
+      const cursor = listingCollection.find().sort({date : -1}).limit(6);
       const result = await cursor.toArray();
       res.send(result);
     });
